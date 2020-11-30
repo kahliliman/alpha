@@ -1,9 +1,8 @@
 import express from 'express';
+import authRoutes from './authRoutes';
+import profileRouter from './profileRoutes';
 import blockUnauthenticated from '../middlewares/authentication/blockUnauthenticated';
-import changePasswordValidation from '../middlewares/validation/changePasswordValidation';
-import editProfileValidation from '../middlewares/validation/editProfileValidation';
 import controller from '../controllers/ViewController/controller';
-import userController from '../controllers/ViewController/userController';
 import gameController from '../controllers/ViewController/gameController';
 
 const router = express.Router();
@@ -17,12 +16,8 @@ router.get('/home', (req, res) => {
   res.redirect('/');
 });
 
-router.get('/profile', blockUnauthenticated, userController.getProfile);
-router.get('/profile/edit', blockUnauthenticated, userController.getEditProfile);
-router.get('/profile/changePassword', blockUnauthenticated, userController.getChangePassword);
-router.patch('/profile/edit', [blockUnauthenticated, editProfileValidation], userController.patchEditProfile);
-router.patch('/profile/changePassword', [blockUnauthenticated, changePasswordValidation], userController.patchChangePassword);
-router.delete('/profile/deleteUser', blockUnauthenticated, userController.deleteUser);
+router.use('/auth', authRoutes);
+router.use('/profile', profileRouter);
 
 router.get('/rockpaperscissor', blockUnauthenticated, gameController.rpsIndex);
 router.get('/gameHistory', blockUnauthenticated, gameController.getGameHistory);

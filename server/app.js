@@ -4,8 +4,7 @@ import path from 'path';
 import logger from 'morgan';
 import session from 'express-session';
 import methodOverride from 'method-override';
-import routes from './routes/routes';
-import authRoutes from './routes/authRoutes';
+import routes from './routes';
 
 const app = express();
 
@@ -58,7 +57,6 @@ app.use(methodOverride('_method'));
 
 // Routes
 app.use(routes);
-app.use('/auth', authRoutes);
 
 // 404 Page
 app.use((req, res) => {
