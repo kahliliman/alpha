@@ -1,4 +1,4 @@
-import { userGameHistories } from '../models';
+import { userGameHistories } from '../../models';
 
 class gameController {
   static rpsIndex = (req, res) => {
@@ -36,7 +36,7 @@ class gameController {
 
       return res.status(201);
     } catch {
-      return res.redirect('/rockpaperscissor');
+      return res.redirect('/game');
     }
   };
 
@@ -47,9 +47,9 @@ class gameController {
       await userGameHistories.destroy({ where: { historyId } })
         .catch((e) => console.log(e));
 
-      return res.redirect('/gameHistory');
+      return res.redirect('/game/history');
     } catch {
-      return res.redirect('/rockpaperscissor');
+      return res.redirect('/game');
     }
   };
 }
