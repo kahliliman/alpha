@@ -3,7 +3,7 @@ import gameHistoryAPIController from '../../../controllers/APIController/GameHis
 
 const router = express.Router();
 
-router.get('/history', gameHistoryAPIController.getGameHistory);
+router.get('/history/:id', gameHistoryAPIController.getGameHistory);
 router.post('/history', gameHistoryAPIController.postGameHistory);
 router.delete('/history', gameHistoryAPIController.deleteGameHistory);
 

@@ -1,4 +1,5 @@
 import { userGameHistories } from '../../models';
+import fetch from 'node-fetch'
 
 class gameController {
   static rpsIndex = (req, res) => {
@@ -6,18 +7,16 @@ class gameController {
   };
 
   static getGameHistory = async (req, res) => {
-    try {
-      const history = await userGameHistories.findAll({
-        attributes: ['historyId', 'timestamps', 'player_choice', 'comp_choice', 'result'],
-        where: { userId: req.session.userId },
-        order: [['timestamps', 'DESC']],
+    await fetch(`http://localhost:${process.env.PORT_NUM}/api/v1/game/history/${req.session.userId}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 200) {
+          return res.render('game_history', { title: 'Game History', username: req.session.username, history: data.history });
+        } else {
+          return res.render('game_history', { title: 'Game History', username: req.session.username, history: '' });
+        }
       })
-        .catch((e) => console.log(e));
-
-      return res.render('game_history', { title: 'Game History', username: req.session.username, history });
-    } catch {
-      return res.render('game_history', { title: 'Game History', username: req.session.username, history: '' });
-    }
+      .catch((e) => console.log(e));
   };
 
   static postGameHistory = async (req, res) => {
